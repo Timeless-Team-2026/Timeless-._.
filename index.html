@@ -27,14 +27,12 @@
      <h2><p>Enjoy delicious food and experience
             our restaurant ordering system.</p></h2>
 
-   <button>Order Now</button>
-      <button>View Menu</button>
+   <button id="btn-order-now">Order Now</button>
+      <button id="btn-view-menu">View Menu</button>
 
         </div>
 
     </section>
-
-    <script src="script.js"></script>
 
 
 
@@ -42,7 +40,7 @@
 <div class="dashboard-layout">
 <div class="second-page">
 
-<section class="menu-section">
+<section class="menu-section" id="menu">
  <h1>Our Special Menu</h1>
  <p> <b>Explore our delicious food items</b> </p>
  
@@ -51,14 +49,14 @@
       <h2>Pizza</h2>
       <p> Cheesy and delicious pizza </p>
        <h3>199</h3>
-      <button>Add to cart</button>
+      <button class="add-btn" item_name="Pizza" item_price="199">Add to cart</button>
    </div>
 
  <div class="menu-card">
     <h2>Burger</h2>
     <p>Fresh and tasty burger </p>
     <h3>99</h3>
-    <button>Add to cart</button>
+    <button class="add-btn" item_name="Burger" item_price="99">Add to cart</button>
 </div>
 
 
@@ -67,7 +65,7 @@
     <h2>Pasta</h2>
     <p>Creamy and delicious pasta</p>
     <h3>149</h3>
-  <button>Add to cart</button>
+  <button class="add-btn" item_name="Pasta" item_price="149">Add to cart</button>
 </div>
 </div>
 </section>
@@ -84,25 +82,25 @@
 
 <div class="table-container">
 
-    <div class="table-card">
+    <div class="table-card" id="table1" table_no="1">
 <h3>Table 1</h3>
-  <p>Available</p>
+  <p id="table1-status">Available</p>
  </div>
 
-<div class="table-card">
+<div class="table-card" id="table2" table_no="2">
        <h3>Table 2</h3> 
-           <p>Occupied</p>
+           <p id="table2-status">Occupied</p>
         </div>
 
-        <div class="table-card">
+        <div class="table-card" id="table3" table_no="3">
             <h3>Table 3</h3>
-            <p>Available</p>
+            <p id="table3-status">Available</p>
         </div>
 
 
-          <div class="table-card">
+          <div class="table-card" id="table4" table_no="4">
             <h3>Table 4</h3>
-            <p>Reserved</p>
+            <p id="table4-status">Reserved</p>
         </div>
 
     </div>
@@ -121,38 +119,42 @@
 
 </div>
 
-<section class="order-section">
+<section class="order-section" id="order">
 
     <h2>Order Details</h2>
 
-    <button>Select Table</button>
+    <button id="btn-select-table">Select Table</button>
 
     <h3>Customer's Name</h3>
-    <input type="text" placeholder="Enter customer name">
+    <input type="text" id="customer-name" placeholder="Enter customer name">
 
     <h3>Note</h3>
-    <input type="text" placeholder="Add note">
+    <input type="text" id="order-note" placeholder="Add note">
 
     <h3>Items</h3>
-    <p>No items added yet</p>
+    <div id="items-list">
+        <p>No items added yet</p>
+    </div>
 
     <hr>
 
-    <p>Sub Total: ₹0</p>
-    <p>Discount: ₹0</p>
-    <p>VAT (0%): ₹0</p>
+    <p>Sub Total: ₹<span id="sub-total">0</span></p>
+    <p>Discount (<span id="discount-percent">0</span>%): ₹<span id="discount-amount">0</span></p>
+    <p>VAT (<span id="vat-percent">0</span>%): ₹<span id="vat-amount">0</span></p>
 
-    <h2>Total: ₹0</h2>
+    <h2>Total: ₹<span id="grand-total">0</span></h2>
 
-    <button>Hold</button>
-    <button>Discount</button>
-    <button>Proceed Payment</button>
+    <button id="btn-hold">Hold</button>
+    <button id="btn-discount">Discount</button>
+    <button id="btn-pay">Proceed Payment</button>
 
 </section>
 </div>
 
-
-
+<!-- jQuery 3.3.1 from Google CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Custom JavaScript logic -->
+<script src="script.js"></script>
 </body>
 
 </html>
