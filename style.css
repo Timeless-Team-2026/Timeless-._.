@@ -148,41 +148,46 @@ button:hover {
 }
 
 /* Menu cards */
+.menu-section {
+    background: #ffffff;
+}
+
 .menu-container {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
+    gap: 18px;
 }
 
 .menu-card {
-    overflow: hidden;
-    border: 1px solid #eceef0;
-    border-radius: 11px;
-    background: #fff;
-}
-
-.food-picture {
     display: flex;
-    height: 125px;
-    align-items: center;
-    justify-content: center;
-    font-size: 55px;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #eaedf0;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(23, 29, 43, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.pizza-picture {
-    background: #f8e8d9;
+.menu-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(23, 29, 43, 0.09);
 }
 
-.burger-picture {
-    background: #f3e8d3;
-}
-
-.pasta-picture {
-    background: #f4e6d9;
+.menu-image {
+    width: 100%;
+    height: 175px;
+    object-fit: cover;
+    display: block;
+    border-top-left-radius: 11px;
+    border-top-right-radius: 11px;
 }
 
 .menu-card-content {
-    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 16px;
 }
 
 .food-category {
@@ -190,17 +195,21 @@ button:hover {
     color: #a96732;
     font-size: 10px;
     font-weight: bold;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
 }
 
 .menu-card h3 {
-    margin: 5px 0;
+    margin: 4px 0 6px;
+    font-size: 17px;
+    color: #171d2b;
 }
 
 .menu-card p:not(.food-category) {
-    min-height: 34px;
-    color: #777e89;
-    font-size: 12px;
+    flex: 1;
+    min-height: 36px;
+    margin: 0 0 16px;
+    color: #64748b;
+    font-size: 13px;
     line-height: 1.5;
 }
 
@@ -208,16 +217,22 @@ button:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid #f1f3f5;
 }
 
 .menu-card-bottom strong {
+    color: #1e293b;
+    font-size: 17px;
+    font-weight: bold;
     white-space: nowrap;
 }
 
 .menu-card-bottom button {
-    padding: 9px 10px;
-    font-size: 11px;
+    padding: 8px 14px;
+    font-size: 12px;
+    border-radius: 6px;
 }
 
 /* Table cards and status colours */
