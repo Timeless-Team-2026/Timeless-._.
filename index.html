@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeless Restaurant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <section class="hero">
+
+        <nav class="navbar">
+      <h2 class="logo">timeless ._.</h2>
+
+     <div>
+      
+      </div>
+     </nav>
+
+    <div class="hero-content">
+
+    <h1>Welcome to Kitchen</h1>
+
+    <h2>Good Food, Better Moments</h2>
+     <h2><p>Enjoy delicious food and experience
+            our restaurant ordering system.</p></h2>
+
+   <button id="btn-order-now">Order Now</button>
+      <button id="btn-view-menu">View Menu</button>
+
+        </div>
+
+    </section>
+
+
+
+    <!--                       menu section                    -->
+<div class="dashboard-layout">
+<div class="second-page">
+
+<section class="menu-section" id="menu">
+ <h1>Our Special Menu</h1>
+ <p> <b>Explore our delicious food items</b> </p>
+ 
+ <div class="menu-container">
+ <div class=" menu-card">
+      <img src="images/pizza.jpg" alt="Cheesy margherita pizza" loading="lazy"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="img-placeholder" style="display:none;">🍕 Image not available</div>
+      <h2>Pizza</h2>
+      <p> Cheesy and delicious pizza </p>
+       <h3>199</h3>
+      <button class="add-btn" item_name="Pizza" item_price="199">Add to cart</button>
+   </div>
+
+ <div class="menu-card">
+    <img src="images/burger.jpg" alt="Fresh gourmet burger" loading="lazy"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <div class="img-placeholder" style="display:none;">🍔 Image not available</div>
+    <h2>Burger</h2>
+    <p>Fresh and tasty burger </p>
+    <h3>99</h3>
+    <button class="add-btn" item_name="Burger" item_price="99">Add to cart</button>
+</div>
+
+
+<div class="menu-card">
+    <img src="images/pasta.jpg" alt="Creamy Italian pasta" loading="lazy"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <div class="img-placeholder" style="display:none;">🍝 Image not available</div>
+    <h2>Pasta</h2>
+    <p>Creamy and delicious pasta</p>
+    <h3>149</h3>
+  <button class="add-btn" item_name="Pasta" item_price="149">Add to cart</button>
+</div>
+</div>
+</section>
+
+
+
+
+<!----        table.              -->
+
+
+
+<section class="table-section">
+<h2>Table Management</h2>
+
+<div class="table-container">
+
+    <div class="table-card" id="table1" table_no="1">
+<h3>Table 1</h3>
+  <p id="table1-status">Available</p>
+ </div>
+
+<div class="table-card" id="table2" table_no="2">
+       <h3>Table 2</h3> 
+           <p id="table2-status">Occupied</p>
+        </div>
+
+        <div class="table-card" id="table3" table_no="3">
+            <h3>Table 3</h3>
+            <p id="table3-status">Available</p>
+        </div>
+
+
+          <div class="table-card" id="table4" table_no="4">
+            <h3>Table 4</h3>
+            <p id="table4-status">Reserved</p>
+        </div>
+
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- end second-page -->
+
+</div>
+
+<section class="order-section" id="order">
+
+    <h2>Order Details</h2>
+
+    <button id="btn-select-table">Select Table</button>
+
+    <h3>Customer's Name</h3>
+    <input type="text" id="customer-name" placeholder="Enter customer name">
+
+    <h3>Note</h3>
+    <input type="text" id="order-note" placeholder="Add note">
+
+    <h3>Items</h3>
+    <div id="items-list">
+        <p>No items added yet</p>
+    </div>
+
+    <hr>
+
+    <p>Sub Total: ₹<span id="sub-total">0</span></p>
+    <p>Discount (<span id="discount-percent">0</span>%): ₹<span id="discount-amount">0</span></p>
+    <p>VAT (<span id="vat-percent">0</span>%): ₹<span id="vat-amount">0</span></p>
+
+    <h2>Total: ₹<span id="grand-total">0</span></h2>
+
+    <button id="btn-hold">Hold</button>
+    <button id="btn-discount">Discount</button>
+    <button id="btn-pay">Proceed Payment</button>
+
+</section>
+</div>
+
+<!-- jQuery 3.3.1 from Google CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Custom JavaScript logic -->
+<script src="script.js"></script>
+</body>
+
+</html>
