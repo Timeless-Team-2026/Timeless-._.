@@ -4,12 +4,12 @@
 
 const VAT_PERCENT = 0;
 
-// Array of table objects tracking status for each table
+// Array of table objects tracking status and reservation for each table
 let tables = [
-    { name: "Table 1", status: "Available" },
-    { name: "Table 2", status: "Occupied" },
-    { name: "Table 3", status: "Available" },
-    { name: "Table 4", status: "Reserved" }
+    { name: "Table 1", status: "Available", reserved: false },
+    { name: "Table 2", status: "Available", reserved: false },
+    { name: "Table 3", status: "Available", reserved: false },
+    { name: "Table 4", status: "Available", reserved: false }
 ];
 
 let cart = [];
@@ -44,15 +44,42 @@ function saveData() {
     localStorage.setItem("timeless_order_number", String(orderNumber));
 }
 
-function loadData() {
-    let savedTables = localStorage.getItem("timeless_tables");
-    if (savedTables) {
-        tables = JSON.parse(savedTables);
+function hasActiveOrder(tableIndex) {
+    for (let i = 0; i < kitchenOrders.length; i++) {
+        if (kitchenOrders[i].tableIndex === tableIndex) {
+            return true;
+        }
     }
+    return false;
+}
 
+function syncTableStatuses() {
+    for (let i = 0; i < tables.length; i++) {
+        if (hasActiveOrder(i)) {
+            tables[i].status = "Occupied";
+            tables[i].reserved = false;
+        } else if (tables[i].reserved === true) {
+            tables[i].status = "Reserved";
+        } else {
+            tables[i].status = "Available";
+        }
+    }
+}
+
+function loadData() {
     let savedKitchen = localStorage.getItem("timeless_kitchen_orders");
     if (savedKitchen) {
         kitchenOrders = JSON.parse(savedKitchen);
+    }
+
+    let savedTables = localStorage.getItem("timeless_tables");
+    if (savedTables) {
+        let parsedTables = JSON.parse(savedTables);
+        for (let i = 0; i < tables.length; i++) {
+            if (parsedTables[i]) {
+                tables[i].reserved = parsedTables[i].reserved === true;
+            }
+        }
     }
 
     let savedHistory = localStorage.getItem("timeless_order_history");
@@ -64,6 +91,10 @@ function loadData() {
     if (savedOrderNum) {
         orderNumber = parseInt(savedOrderNum) || 101;
     }
+
+    // Fix any outdated or incorrect saved table statuses without deleting order history
+    syncTableStatuses();
+    saveData();
 }
 
 const itemCustomizationOptions = {
@@ -272,32 +303,85 @@ function showTables() {
 
 
 function pickTable(index) {
-
     if (index === selectedTable) {
         alert("Table " + (index + 1) + " is already selected!");
         return;
     }
 
-   
-    if (tables[index].status !== "Available") {
-        alert("Table " + (index + 1) + " is not available! It is currently " + tables[index].status + ".");
+    if (tables[index].status === "Occupied") {
+        alert("Table " + (index + 1) + " is not available! It is currently Occupied.");
         return;
     }
 
-    
-    if (selectedTable !== -1) {
-        tables[selectedTable].status = "Available";
+    if (tables[index].status === "Reserved") {
+        if (confirm("Table " + (index + 1) + " is Reserved. Do you want to cancel its reservation?")) {
+            tables[index].reserved = false;
+            syncTableStatuses();
+            saveData();
+            showTables();
+        }
+        return;
     }
 
-    
     selectedTable = index;
-    tables[selectedTable].status = "Occupied";
-
-   
     $("#btn-select-table").text("Table " + (selectedTable + 1) + " selected");
 
     // Refresh table cards
     showTables();
+}
+
+function reserveTable() {
+    let input = prompt("Enter table number to reserve (1 to 4):");
+    if (input === null) {
+        return;
+    }
+
+    let tableNum = parseInt(input);
+    if (isNaN(tableNum) || tableNum < 1 || tableNum > tables.length) {
+        alert("Invalid table number! Please enter a number between 1 and " + tables.length + ".");
+        return;
+    }
+
+    let index = tableNum - 1;
+    if (tables[index].status !== "Available") {
+        alert("Table " + tableNum + " cannot be reserved because it is currently " + tables[index].status + ".");
+        return;
+    }
+
+    tables[index].reserved = true;
+    if (selectedTable === index) {
+        selectedTable = -1;
+        $("#btn-select-table").text("Select Table");
+    }
+    syncTableStatuses();
+    saveData();
+    showTables();
+    alert("Table " + tableNum + " has been reserved.");
+}
+
+function cancelReservation() {
+    let input = prompt("Enter table number to cancel reservation (1 to 4):");
+    if (input === null) {
+        return;
+    }
+
+    let tableNum = parseInt(input);
+    if (isNaN(tableNum) || tableNum < 1 || tableNum > tables.length) {
+        alert("Invalid table number! Please enter a number between 1 and " + tables.length + ".");
+        return;
+    }
+
+    let index = tableNum - 1;
+    if (tables[index].status !== "Reserved") {
+        alert("Table " + tableNum + " does not have an active reservation.");
+        return;
+    }
+
+    tables[index].reserved = false;
+    syncTableStatuses();
+    saveData();
+    showTables();
+    alert("Reservation for Table " + tableNum + " has been cancelled.");
 }
 
 function selectTable() {
@@ -379,7 +463,8 @@ function holdOrder() {
     }
 
     // Set selected table status to Reserved
-    tables[selectedTable].status = "Reserved";
+    tables[selectedTable].reserved = true;
+    syncTableStatuses();
     saveData();
     showTables();
 
@@ -417,7 +502,7 @@ function confirmOrder() {
     kitchenOrders.push(newOrder);
 
     // Mark table as Occupied automatically when order is confirmed
-    tables[selectedTable].status = "Occupied";
+    syncTableStatuses();
     orderNumber++;
 
     saveData();
@@ -553,6 +638,9 @@ function billKitchenOrder(index) {
 
     kitchenOrders.splice(index, 1);
 
+    // Mark table as Available if all active orders for that table are billed
+    syncTableStatuses();
+
     saveData();
     showTables();
     showKitchenOrders();
@@ -624,12 +712,13 @@ function proceedPayment() {
     // Save completed order to history
     addOrderToHistory(directOrder);
 
-    // Free the table
-    tables[selectedTable].status = "Available";
+    // Free the table if no other active kitchen orders exist
+    tables[selectedTable].reserved = false;
 
     // Increment order number
     orderNumber++;
 
+    syncTableStatuses();
     saveData();
 
     // Reset the order
@@ -662,13 +751,19 @@ $(function() {
     showKitchenOrders();
     showOrderHistory();
 
-    // 2. Smooth scroll to #menu when clicking Order Now or View Menu
+    // 2. Smooth scroll when clicking Order Now or View Menu
     $("#btn-order-now").on("click", function() {
-        window.location.hash = "#menu";
+        let tablesSection = document.getElementById("tables");
+        if (tablesSection) {
+            tablesSection.scrollIntoView({ behavior: "smooth" });
+        }
     });
 
     $("#btn-view-menu").on("click", function() {
-        window.location.hash = "#menu";
+        let menuSection = document.getElementById("menu");
+        if (menuSection) {
+            menuSection.scrollIntoView({ behavior: "smooth" });
+        }
     });
 
     // 3. Add to cart button opens item customization modal
@@ -688,8 +783,10 @@ $(function() {
         pickTable(tableNo - 1);
     });
 
-    // 5. Connect order control buttons to functions
+    // 5. Connect order and table control buttons to functions
     $("#btn-select-table").on("click", selectTable);
+    $("#btn-reserve-table").on("click", reserveTable);
+    $("#btn-cancel-reservation").on("click", cancelReservation);
     $("#btn-discount").on("click", applyDiscount);
     $("#btn-hold").on("click", holdOrder);
     $("#btn-confirm-order").on("click", confirmOrder);
