@@ -1,14 +1,7 @@
-/* ==========================================================================
-   TIMELESS RESTAURANT - LOGIC SCRIPT
-   Course: B.Tech CSE (Year 1)
-   Technologies: JavaScript Fundamentals & jQuery 3.3.1
-   ========================================================================== */
 
-/* --------------------------------------------------------------------------
-   1. DATA & GLOBAL VARIABLES
-   -------------------------------------------------------------------------- */
 
-// VAT percentage constant (0%)
+
+
 const VAT_PERCENT = 0;
 
 // Array of table objects tracking status for each table
@@ -19,29 +12,23 @@ let tables = [
     { name: "Table 4", status: "Reserved" }
 ];
 
-// Array of cart item objects: { name, price, qty }
 let cart = [];
 
-// Index of currently selected table (-1 means no table selected)
 let selectedTable = -1;
 
-// Discount percentage (0 to 100)
+
 let discountPercent = 0;
 
-// Order counter starting at 101
 let orderNumber = 101;
 
 
-/* --------------------------------------------------------------------------
-   2. CART MANAGEMENT FUNCTIONS
-   -------------------------------------------------------------------------- */
 
-// Function to add a food item to the cart or increase quantity if it already exists
+
 function addToCart(name, price) {
     let itemPrice = parseInt(price);
     let itemFound = false;
 
-    // Loop through existing cart items to check for duplicates
+   
     for (let i = 0; i < cart.length; i++) {
         if (cart[i].name === name) {
             cart[i].qty += 1;
@@ -50,7 +37,7 @@ function addToCart(name, price) {
         }
     }
 
-    // If item was not in cart, push a new item object
+  
     if (!itemFound) {
         cart.push({
             name: name,
@@ -59,11 +46,11 @@ function addToCart(name, price) {
         });
     }
 
-    // Refresh cart display
+  
     showCart();
 }
 
-// Function to increase or decrease item quantity; removes item if qty reaches 0
+
 function changeQty(index, change) {
     cart[index].qty += change;
 
@@ -76,7 +63,6 @@ function changeQty(index, change) {
     showCart();
 }
 
-// Function to remove an item completely from the cart by its index
 function removeItem(index) {
     cart.splice(index, 1);
     showCart();
@@ -86,15 +72,15 @@ function removeItem(index) {
 function calculateTotals() {
     let subtotal = 0;
 
-    // Loop through cart to sum item totals
+   
     for (let i = 0; i < cart.length; i++) {
         subtotal += cart[i].price * cart[i].qty;
     }
 
-    // Calculate discount amount rounded to nearest integer
+    
     let discount = Math.round((subtotal * discountPercent) / 100);
 
-    // Calculate VAT amount on discounted price rounded to nearest integer
+   
     let taxableAmount = subtotal - discount;
     let vat = Math.round((taxableAmount * VAT_PERCENT) / 100);
 
@@ -109,17 +95,15 @@ function calculateTotals() {
     };
 }
 
-// Function to render cart items in HTML and update totals display
 function showCart() {
     let itemsList = $("#items-list");
 
-    // Display empty message if no items in cart
+    
     if (cart.length === 0) {
         itemsList.html("<p>No items added yet</p>");
     } else {
         let htmlString = "";
 
-        // Build HTML table/list rows using a for loop
         for (let i = 0; i < cart.length; i++) {
             let item = cart[i];
             let linePrice = item.price * item.qty;
@@ -139,7 +123,7 @@ function showCart() {
         itemsList.html(htmlString);
     }
 
-    // Update totals spans
+  
     let totals = calculateTotals();
     $("#sub-total").text(totals.subtotal);
     $("#discount-percent").text(discountPercent);
@@ -150,11 +134,8 @@ function showCart() {
 }
 
 
-/* --------------------------------------------------------------------------
-   3. TABLE MANAGEMENT FUNCTIONS
-   -------------------------------------------------------------------------- */
 
-// Function to update visual style and status of all 4 table cards
+
 function showTables() {
     for (let i = 0; i < tables.length; i++) {
         let tableCard = $("#table" + (i + 1));
@@ -164,18 +145,18 @@ function showTables() {
         // Update the status text
         statusParagraph.text(status);
 
-        // Switch statement to set card color based on table status
+       
         switch (status) {
             case "Available":
-                tableCard.css("background-color", "#d4edda"); // Green
+                tableCard.css("background-color", "#d4edda"); 
                 statusParagraph.css("color", "#155724");
                 break;
             case "Occupied":
-                tableCard.css("background-color", "#f8d7da"); // Red
+                tableCard.css("background-color", "#f8d7da"); 
                 statusParagraph.css("color", "#721c24");
                 break;
             case "Reserved":
-                tableCard.css("background-color", "#fff3cd"); // Yellow
+                tableCard.css("background-color", "#fff3cd"); 
                 statusParagraph.css("color", "#856404");
                 break;
             default:
@@ -184,7 +165,7 @@ function showTables() {
                 break;
         }
 
-        // Highlight selected table with a thicker border
+       
         if (i === selectedTable) {
             tableCard.css("border", "3px solid #101ca4");
         } else {
@@ -193,48 +174,46 @@ function showTables() {
     }
 }
 
-// Function to select an available table by index (0 to 3)
+
 function pickTable(index) {
-    // Reject if table is already the selected one
+
     if (index === selectedTable) {
         alert("Table " + (index + 1) + " is already selected!");
         return;
     }
 
-    // Reject if table status is not Available
+   
     if (tables[index].status !== "Available") {
         alert("Table " + (index + 1) + " is not available! It is currently " + tables[index].status + ".");
         return;
     }
 
-    // Free previously selected table if one was selected
+    
     if (selectedTable !== -1) {
         tables[selectedTable].status = "Available";
     }
 
-    // Assign new table and mark it Occupied
+    
     selectedTable = index;
     tables[selectedTable].status = "Occupied";
 
-    // Update Select Table button text
+   
     $("#btn-select-table").text("Table " + (selectedTable + 1) + " selected");
 
     // Refresh table cards
     showTables();
 }
 
-// Function to prompt user to enter table number 1 to 4
 function selectTable() {
     let input = prompt("Enter a table number (1 to 4):");
 
-    // Exit if user cancelled prompt
+  
     if (input === null) {
         return;
     }
 
     let tableNum = parseInt(input);
 
-    // Validate table number (checks for NaN, < 1, > 4)
     if (isNaN(tableNum) || tableNum < 1 || tableNum > 4) {
         alert("Invalid table number! Please enter a number between 1 and 4.");
         return;
@@ -244,10 +223,6 @@ function selectTable() {
     pickTable(tableNum - 1);
 }
 
-
-/* --------------------------------------------------------------------------
-   4. ORDER ACTION FUNCTIONS
-   -------------------------------------------------------------------------- */
 
 // Function to prompt for and apply a discount percentage
 function applyDiscount() {
@@ -278,17 +253,15 @@ function applyDiscount() {
     showCart();
 }
 
-// Function to validate that customer name, table, and cart are present
 function orderIsValid() {
     let customerName = $("#customer-name").val().trim();
 
-    // Check customer name
+  
     if (customerName === "") {
         alert("Please enter customer name!");
         return false;
     }
 
-    // Check table selection
     if (selectedTable === -1) {
         alert("Please select a table!");
         return false;
@@ -381,9 +354,7 @@ function resetOrder() {
 }
 
 
-/* --------------------------------------------------------------------------
-   5. EVENTS & INITIALIZATION (jQuery Ready Handler)
-   -------------------------------------------------------------------------- */
+
 
 $(function() {
     // 1. Initial render of tables and cart on page load
