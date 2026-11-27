@@ -43,7 +43,8 @@
 <section class="menu-section" id="menu">
  <h1>Our Special Menu</h1>
  <p> <b>Explore our delicious food items</b> </p>
- 
+
+ <h2 class="menu-category-title">Food</h2>
  <div class="menu-container">
  <div class=" menu-card">
       <img src="images/pizza.jpg" alt="Cheesy margherita pizza" loading="lazy"
@@ -74,6 +75,39 @@
     <p>Creamy and delicious pasta</p>
     <h3>149</h3>
   <button class="add-btn" item_name="Pasta" item_price="149">Add to cart</button>
+</div>
+
+<div class="menu-card">
+    <img src="images/noodles.jpg" alt="Flavorful stir-fried noodles" loading="lazy"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <div class="img-placeholder" style="display:none;"> Image not available</div>
+    <h2>Noodles</h2>
+    <p>Flavorful and savory noodles</p>
+    <h3>99</h3>
+    <button class="add-btn" item_name="Noodles" item_price="99">Add to cart</button>
+</div>
+</div>
+
+ <h2 class="menu-category-title">Beverages</h2>
+ <div class="menu-container">
+ <div class="menu-card">
+    <img src="images/tea.jpg" alt="Hot spiced tea" loading="lazy"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <div class="img-placeholder" style="display:none;"> Image not available</div>
+    <h2>Tea</h2>
+    <p>Warm and refreshing spiced tea</p>
+    <h3>20</h3>
+    <button class="add-btn" item_name="Tea" item_price="20">Add to cart</button>
+</div>
+
+ <div class="menu-card">
+    <img src="images/coffee.jpg" alt="Freshly brewed coffee" loading="lazy"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <div class="img-placeholder" style="display:none;"> Image not available</div>
+    <h2>Coffee</h2>
+    <p>Rich and aromatic hot coffee</p>
+    <h3>50</h3>
+    <button class="add-btn" item_name="Coffee" item_price="50">Add to cart</button>
 </div>
 </div>
 </section>
@@ -114,14 +148,21 @@
     </div>
 </section>
 
+<!-- Kitchen Order Queue Section -->
+<section class="kitchen-section" id="kitchen-queue">
+    <h2>Kitchen Order Queue</h2>
+    <div id="kitchen-orders-list" class="kitchen-container">
+        <p class="empty-msg">No active orders in kitchen</p>
+    </div>
+</section>
 
-
-
-
-
-
-
-
+<!-- Order History Section -->
+<section class="history-section" id="order-history">
+    <h2>Order History</h2>
+    <div id="order-history-list" class="history-container">
+        <p class="empty-msg">No completed orders yet</p>
+    </div>
+</section>
 
 <!-- end second-page -->
 
@@ -154,9 +195,30 @@
 
     <button id="btn-hold">Hold</button>
     <button id="btn-discount">Discount</button>
+    <button id="btn-confirm-order">Confirm Order</button>
     <button id="btn-pay">Proceed Payment</button>
 
 </section>
+</div>
+
+<!-- Item Customization Modal -->
+<div id="custom-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-box">
+        <h3 id="modal-item-title">Customize Item</h3>
+        <div class="modal-options">
+            <label><input type="checkbox" class="custom-option" value="Extra Cheese"> Extra Cheese</label>
+            <label><input type="checkbox" class="custom-option" value="No Onion"> No Onion</label>
+            <label><input type="checkbox" class="custom-option" value="Less Spicy"> Less Spicy</label>
+        </div>
+        <div class="modal-instructions">
+            <label for="modal-special-note">Special Instructions:</label>
+            <input type="text" id="modal-special-note" placeholder="Enter special instructions (optional)">
+        </div>
+        <div class="modal-actions">
+            <button id="btn-modal-add">Add to Order</button>
+            <button id="btn-modal-cancel" class="btn-secondary">Cancel</button>
+        </div>
+    </div>
 </div>
 
 <!-- jQuery 3.3.1 from Google CDN -->
