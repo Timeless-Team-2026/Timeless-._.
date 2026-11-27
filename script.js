@@ -66,10 +66,27 @@ function loadData() {
     }
 }
 
+const itemCustomizationOptions = {
+    "Tea": ["No Sugar", "Less Sugar", "Extra Milk", "Extra Ginger"],
+    "Coffee": ["No Sugar", "Less Sugar", "Extra Milk", "Strong Coffee"],
+    "Noodles": ["No Onion", "Less Spicy", "Extra Spicy", "Extra Vegetables"],
+    "Pizza": ["Extra Cheese", "No Onion", "Extra Toppings"],
+    "Burger": ["Extra Cheese", "No Onion", "No Mayonnaise"],
+    "Pasta": ["Extra Cheese", "Less Spicy", "Extra Sauce"]
+};
+
 function openCustomModal(name, price) {
     pendingItem = { name: name, price: parseInt(price) };
     $("#modal-item-title").text("Customize " + name + " (₹" + pendingItem.price + ")");
-    $(".custom-option").prop("checked", false);
+
+    let options = itemCustomizationOptions[name] || [];
+    let optionsHtml = "";
+    for (let i = 0; i < options.length; i++) {
+        let opt = escapeHtml(options[i]);
+        optionsHtml += '<label><input type="checkbox" class="custom-option" value="' + opt + '"> ' + opt + '</label>';
+    }
+
+    $("#modal-options-container").html(optionsHtml);
     $("#modal-special-note").val("");
     $("#custom-modal").css("display", "flex");
 }
